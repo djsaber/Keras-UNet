@@ -1,25 +1,12 @@
 # coding=gbk
 
-
 from keras.layers import Input, Conv2D, MaxPooling2D, Layer
 from keras.layers import Concatenate, UpSampling2D, BatchNormalization
 from keras.models import Model
 
 
-'''
-UNet ÊôÓÚ FCN µÄÒ»ÖÖ±äÌå£¬Ëü¿ÉÒÔËµÊÇ×î³£ÓÃ¡¢×î¼òµ¥µÄÒ»ÖÖ·Ö¸îÄ£ĞÍ£¬
-Ëü¼òµ¥¡¢¸ßĞ§¡¢Ò×¶®¡¢ÈİÒ×¹¹½¨£¬ÇÒ¿ÉÒÔ´ÓĞ¡Êı¾İ¼¯ÖĞÑµÁ·¡£2015 Äê±»Ìá³ö ¡£
-UNet µÄ³õÖÔÊÇÎªÁË½â¾öÒ½Ñ§Í¼Ïñ·Ö¸îµÄÎÊÌâ£¬ÔÚ½â¾öÏ¸°û²ãÃæµÄ·Ö¸îµÄÈÎÎñ·½Ãæ£¬
-ÆäÔÚ 2015 ÄêµÄ ISBI cell tracking ±ÈÈüÖĞ»ñµÃÁË¶à¸öµÚÒ»¡£
-Ö®ºó£¬UNet Æ¾½èÆäÍ»³öµÄ·Ö¸îĞ§¹û¶ø±»¹ã·ºÓ¦ÓÃÔÚÓïÒå·Ö¸îµÄ¸÷¸ö·½Ïò£¨ÈçÎÀĞÇÍ¼Ïñ·Ö¸î£¬¹¤Òµè¦´Ã¼ì²âµÈ£©
-
-ÆäÍøÂç½á¹¹ÊÇ¶Ô³ÆµÄ£¬ĞÎËÆÓ¢ÎÄ×ÖÄ¸ U£¬¹Ê¶ø±»³ÆÎª UNet ¡£¾ÍÕûÌå¶øÑÔ£¬
-UNet ÊÇÒ»¸öEncoder-DecoderµÄ½á¹¹£¨Óë FCN ÏàÍ¬£©£¬Ç°°ë²¿·ÖÊÇÌØÕ÷ÌáÈ¡£¬ºó°ë²¿·ÖÊÇÉÏ²ÉÑù¡£
-
-'''
-
 class DownBlock(Layer):
-    '''ÏÂ²ÉÑùÄ£¿é'''
+    '''ä¸‹é‡‡æ ·æ¨¡å—'''
     def __init__(self, width, **kwargs):
         super().__init__(**kwargs)
         self.conv1 = Conv2D(width, 3, activation='relu', padding='same')
@@ -36,7 +23,7 @@ class DownBlock(Layer):
 
 
 class UpBlock(Layer):
-    '''ÏÂ²ÉÑùÄ£¿é'''
+    '''ä¸‹é‡‡æ ·æ¨¡å—'''
     def __init__(self, width, **kwargs):
         super().__init__(**kwargs)
         self.up_sample = UpSampling2D(interpolation="nearest")
@@ -56,12 +43,12 @@ class UpBlock(Layer):
     
 
 class UNet(Model):
-    '''unetµÄÊµÏÖ
-        skips£º±£´æÏÂ²ÉÑùÄ£¿éµÄÊä³ö£¬Á¬½Óµ½ÉÏ²ÉÑùÄ£¿é 
-        down_blocks£º´æ·Å¶à¸öÏÂ²ÉÑùÄ£¿é
-        conv_block£ºÉÏ²ÉÑùºÍÏÂ²ÉÑù¹ı³ÌÖĞ¹ı¶È´¦¾í»ıÄ£¿é
-        up_blocks£º´æ·Å¶à¸öÉÏ²ÉÑùÄ£¿é
-        out£º´¦Àí×îºóÉÏ²ÉÑùµÄ½á¹û£¬Æ¥Åä±êÇ©Î¬¶È
+    '''unetçš„å®ç°
+        skipsï¼šä¿å­˜ä¸‹é‡‡æ ·æ¨¡å—çš„è¾“å‡ºï¼Œè¿æ¥åˆ°ä¸Šé‡‡æ ·æ¨¡å— 
+        down_blocksï¼šå­˜æ”¾å¤šä¸ªä¸‹é‡‡æ ·æ¨¡å—
+        conv_blockï¼šä¸Šé‡‡æ ·å’Œä¸‹é‡‡æ ·è¿‡ç¨‹ä¸­è¿‡åº¦å¤„å·ç§¯æ¨¡å—
+        up_blocksï¼šå­˜æ”¾å¤šä¸ªä¸Šé‡‡æ ·æ¨¡å—
+        outï¼šå¤„ç†æœ€åä¸Šé‡‡æ ·çš„ç»“æœï¼ŒåŒ¹é…æ ‡ç­¾ç»´åº¦
     '''
     def __init__(self, output_channel, **kwargs):
         super().__init__(**kwargs)
