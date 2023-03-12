@@ -5,9 +5,8 @@ from utils import *
 
 
 #------------------------------设置参数----------------------------------------
-img_heigh = 256
-img_width = 256
 img_channel = 1
+target_size = (256, 256)
 #-----------------------------------------------------------------------------
 
 
@@ -18,20 +17,20 @@ load_path = "D:/科研/python代码/炼丹手册/UNet/save_models/unet.h5"
 
 
 #-----------------------------读取测试图片--------------------------------------
-test_x, test_y = load_data(data_path)
+test_x, test_y = load_data(data_path, target_size)
 #-----------------------------------------------------------------------------
 
 
 #------------------------------获得模型----------------------------------------
 unet = UNet(img_channel)
-unet.build((None, img_heigh, img_width, img_channel))
+unet.build((None, target_size[0], target_size[1], img_channel))
 unet.load_weights(load_path)
 #-----------------------------------------------------------------------------
 
 
 #------------------------------测试模型----------------------------------------
 model_predict = unet.predict(test_x)
-draw_img(test_x[0])                          # 原始图片
-draw_img(test_y[0])                          # 标签图片
-draw_img(normalize(model_predict[0]))        # 预测图片
+draw_img(test_x[0])                      # 原始图片
+draw_img(test_y[0])                      # 标签图片
+draw_img(normalize(model_predict[0]))    # 预测图片
 #-----------------------------------------------------------------------------

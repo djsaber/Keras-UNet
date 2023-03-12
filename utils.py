@@ -6,11 +6,11 @@ from keras.utils import load_img, img_to_array, array_to_img
 from keras.preprocessing.image import ImageDataGenerator
 
 
-def read_img(img_path):
+def read_img(img_path, target_size=(256,256)):
     '''读取图片'''
     img = load_img(img_path,
                    color_mode = "grayscale",
-                   target_size=(256,256))
+                   target_size=target_size)
     arr = img_to_array(img) / 255.0
     return arr
 
@@ -24,16 +24,16 @@ def normalize(arr):
     arr = np.where(arr > 0.5, 1., 0.)
     return arr
 
-def load_data(path):
+def load_data(path, target_size=(256,256)):
     '''生成数据和标签'''
     img_path = path+"Images/"
     label_path = path+"Labels/"
     imgs_list = os.listdir(img_path)
-    imgs = np.empty((len(imgs_list), 256, 256, 1))
-    labels = np.empty((len(imgs_list), 256, 256, 1))
+    imgs = np.empty((len(imgs_list), target_size[0], target_size[1], 1))
+    labels = np.empty((len(imgs_list), target_size[0], target_size[1], 1))
     for idx, file_name in enumerate(imgs_list):
-        img = read_img(img_path+file_name)
-        label = read_img(label_path+file_name)
+        img = read_img(img_path+file_name, target_size)
+        label = read_img(label_path+file_name, target_size)
         imgs[idx] = img
         labels[idx] = label
     return imgs, labels
