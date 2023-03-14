@@ -23,7 +23,7 @@ class DownBlock(Layer):
 
 
 class UpBlock(Layer):
-    '''下采样模块'''
+    '''上采样模块'''
     def __init__(self, width, **kwargs):
         super().__init__(**kwargs)
         self.up_sample = UpSampling2D(interpolation="nearest")
